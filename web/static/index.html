@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WinCustomizer Studio | Windows ISO Customization Suite</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Top Header -->
+    <header>
+        <div class="brand">
+            <div class="brand-logo">
+                <svg viewBox="0 0 24 24"><path d="M3 3h8v8H3V3zm10 0h8v8h-8V3zM3 13h8v8H3v-8zm10 0h8v8h-8v-8z"/></svg>
+            </div>
+            <div class="brand-text">
+                <h1>WinCustomizer Studio</h1>
+                <span>Windows 10 & 11 Automated Image Customization Suite</span>
+            </div>
+        </div>
+        <div class="version-tag">Engine v1.0.0</div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="app-container">
+
+        <!-- Sidebar Navigation Stepper -->
+        <aside class="wizard-sidebar">
+            <div class="sidebar-title">Customization Steps</div>
+            <nav class="step-nav">
+                <div class="step-item active" onclick="switchStep(1)">
+                    <div class="step-number">1</div>
+                    <div class="step-label">
+                        <span>ISO & Edition</span>
+                        <small>Select Windows ISO file</small>
+                    </div>
+                </div>
+                <div class="step-item" onclick="switchStep(2)">
+                    <div class="step-number">2</div>
+                    <div class="step-label">
+                        <span>AppX Debloat</span>
+                        <small>Remove bloatware & apps</small>
+                    </div>
+                </div>
+                <div class="step-item" onclick="switchStep(3)">
+                    <div class="step-number">3</div>
+                    <div class="step-label">
+                        <span>System Tweaks</span>
+                        <small>Win11 bypass & privacy</small>
+                    </div>
+                </div>
+                <div class="step-item" onclick="switchStep(4)">
+                    <div class="step-number">4</div>
+                    <div class="step-label">
+                        <span>Unattended XML</span>
+                        <small>User account & setup</small>
+                    </div>
+                </div>
+                <div class="step-item" onclick="switchStep(5)">
+                    <div class="step-number">5</div>
+                    <div class="step-label">
+                        <span>Build & Export</span>
+                        <small>Execute pipeline</small>
+                    </div>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Workspace Area -->
+        <main class="workspace">
+
+            <!-- Step 1: ISO Selection & Edition Inspection -->
+            <section id="step-1" class="glass-card">
+                <div class="card-header">
+                    <div>
+                        <h2>Step 1: Select Windows ISO File</h2>
+                        <p>Provide the absolute path to your original Windows 10/11 installation ISO image.</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="isoPath">Windows Installation ISO File Path</label>
+                    <div class="input-row">
+                        <input type="text" id="isoPath" placeholder="e.g. C:\ISOs\Windows11_23H2_x64.iso" style="flex: 1;">
+                        <button class="btn-primary" onclick="inspectISO()">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                            Inspect ISO
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Editions Container -->
+                <div id="editionsContainer" style="display: none; margin-top: 10px;">
+                    <label style="margin-bottom: 12px; display: block;">Detected Windows Editions (Select Target Edition):</label>
+                    <div class="editions-grid" id="editionsGrid">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 2: AppX Debloating Presets -->
+            <section id="step-2" class="glass-card" style="display: none;">
+                <div class="card-header">
+                    <div>
+                        <h2>Step 2: AppX Package Debloating</h2>
+                        <p>Choose a debloat profile or select specific provisioned AppX package categories to remove.</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="debloatProfile">Debloat Profile Preset</label>
+                    <select id="debloatProfile" onchange="onDebloatProfileChange()">
+                        <option value="max_privacy" selected>Maximum Privacy & Clean (Recommended)</option>
+                        <option value="gaming">Gaming & Performance Optimized</option>
+                        <option value="minimal">Minimal Debloat (Keep non-essential utilities)</option>
+                        <option value="custom">Custom Selection</option>
+                    </select>
+                </div>
+
+                <div class="toggle-grid" id="appxCategoriesGrid" style="margin-top: 10px;">
+                    <!-- AppX Categories injected dynamically -->
+                </div>
+            </section>
+
+            <!-- Step 3: System & Registry Tweaks -->
+            <section id="step-3" class="glass-card" style="display: none;">
+                <div class="card-header">
+                    <div>
+                        <h2>Step 3: System & Registry Optimization Tweaks</h2>
+                        <p>Inject offline registry modifications for Windows 11 hardware check bypasses, privacy, and UX enhancements.</p>
+                    </div>
+                </div>
+
+                <div class="toggle-grid" id="tweaksGrid">
+                    <!-- Tweak cards injected dynamically -->
+                </div>
+            </section>
+
+            <!-- Step 4: Unattended Setup XML Configuration -->
+            <section id="step-4" class="glass-card" style="display: none;">
+                <div class="card-header">
+                    <div>
+                        <h2>Step 4: Unattended Answer File (autounattend.xml)</h2>
+                        <p>Configure automated installation settings to bypass initial setup prompts & create default user account.</p>
+                    </div>
+                </div>
+
+                <div class="toggle-grid">
+                    <div class="form-group">
+                        <label for="unattendUser">Default Username</label>
+                        <input type="text" id="unattendUser" value="Admin">
+                    </div>
+                    <div class="form-group">
+                        <label for="unattendPass">User Password (Optional)</label>
+                        <input type="password" id="unattendPass" placeholder="Leave empty for auto-login without password">
+                    </div>
+                    <div class="form-group">
+                        <label for="unattendPCName">Computer Name</label>
+                        <input type="text" id="unattendPCName" value="WinCustom-PC">
+                    </div>
+                    <div class="form-group">
+                        <label for="unattendLang">System Language / Locale</label>
+                        <input type="text" id="unattendLang" value="en-US">
+                    </div>
+                </div>
+
+                <div class="toggle-grid" style="margin-top: 14px;">
+                    <label class="toggle-card">
+                        <input type="checkbox" id="skipOOBE" checked>
+                        <div class="toggle-info">
+                            <h4>Skip OOBE Privacy & Region Screens</h4>
+                            <p>Automatically accept EULA, skip WiFi setup, privacy questions, and Microsoft Account online enforcement.</p>
+                        </div>
+                    </label>
+                    <label class="toggle-card">
+                        <input type="checkbox" id="autoLogon" checked>
+                        <div class="toggle-info">
+                            <h4>Enable Auto-Logon on First Boot</h4>
+                            <p>Automatically log into the created user account directly after Windows installation completes.</p>
+                        </div>
+                    </label>
+                </div>
+            </section>
+
+            <!-- Step 5: Execute & Live Console -->
+            <section id="step-5" class="glass-card" style="display: none;">
+                <div class="card-header">
+                    <div>
+                        <h2>Step 5: Build & Export Customized ISO</h2>
+                        <p>Run the customization pipeline. Real-time DISM progress and logs will stream below.</p>
+                    </div>
+                    <button class="btn-primary" id="btnBuild" onclick="startBuild()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+                        Start ISO Customization
+                    </button>
+                </div>
+
+                <!-- Execution Terminal Console -->
+                <div class="console-card">
+                    <div class="console-header">
+                        <div class="console-title">
+                            <div class="pulse-dot"></div>
+                            Execution Engine Terminal Log Output
+                        </div>
+                    </div>
+                    <div class="console-body" id="consoleLog">Ready to begin customization pipeline...</div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
